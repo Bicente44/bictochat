@@ -28,6 +28,7 @@ func main() {
 	mux.HandleFunc("/join", handlers.JoinHandler)			// Join
 	mux.HandleFunc("/send", handlers.SendHandler)			// Send
 	mux.HandleFunc("/poll", handlers.PollHandler)			// Poll
+	mux.HandleFunc("/rooms", handlers.RoomsHandler)			// Rooms
 	// TODO Handle 404 in the future
 
 	// opens the port, hands requests to the mux and listens

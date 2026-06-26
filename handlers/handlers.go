@@ -62,3 +62,9 @@ func PollHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(messages)
 }
+
+func RoomsHandler(w http.ResponseWriter, r *http.Request) {
+	roomList := rooms.Store.GetRooms()
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(roomList)
+}

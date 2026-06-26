@@ -38,6 +38,11 @@ type Room struct {
 	MessageList []Message
 }
 
+type RoomInfo struct {
+    RoomID string `json:"roomID"`
+    Count  int    `json:"count"`
+}
+
 // Does not return anything because it directly modifies the data
 func (st *RoomStore) InitRooms() {
 	roomIDs := []string{"A", "B", "C", "D", "E", "F", "G", "H"}
@@ -86,7 +91,6 @@ func (st *RoomStore) AddMessage(roomID string, newMessage Message) error {
 	return nil
 }
 
-// Should we instead return the list? since server is source of truth why dont we grab the whole list and return it?
 func (st *RoomStore) GetMessage(roomID string) ([]Message, error) {
 	st.Mu.Lock()
 	defer st.Mu.Unlock()
@@ -96,4 +100,19 @@ func (st *RoomStore) GetMessage(roomID string) ([]Message, error) {
 		return nil, errors.New("room does not exist")
 	}
 	return room.MessageList, nil
+}
+
+func (st *RoomStore) GetRooms() []RoomInfo {
+	var result []RoomInfo
+
+	st.Mu.Lock()
+	defer st.Mu.Unlock()
+
+	for id, room := range st.Rooms {
+		result = append(result, RoomInfo{
+			RoomID: id,
+			Count:  len(room.ClientList),
+		})
+	}
+	return result
 }
