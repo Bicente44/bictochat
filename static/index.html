@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PictoChat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- VIEW 1: Room List -->
+  <div id="room-list" class="view active">
+    <header class="app-header">
+      <h1 class="logo">PictoChat</h1>
+      <p class="tagline">Pick a room to join</p>
+    </header>
+    <div class="room-grid" id="room-grid">
+      <!-- Room cards rendered by JS -->
+    </div>
+  </div>
+
+  <!-- VIEW 2: Username Prompt -->
+  <div id="username-prompt" class="view">
+    <div class="prompt-card">
+      <div class="prompt-room-badge" id="prompt-room-badge">Room A</div>
+      <h2 class="prompt-title">What's your name?</h2>
+      <p class="prompt-subtitle">Others in the room will see this.</p>
+      <input
+        type="text"
+        id="username-input"
+        class="username-input"
+        placeholder="Enter username"
+        maxlength="20"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
+      <div id="username-error" class="field-error" aria-live="polite"></div>
+      <div class="prompt-actions">
+        <button class="btn btn-secondary" id="back-btn">← Back</button>
+        <button class="btn btn-primary" id="join-btn">Join Room</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW 3: Chat Room -->
+  <div id="chat-room" class="view">
+    <div class="chat-layout">
+
+      <!-- Top bar -->
+      <div class="chat-topbar">
+        <div class="chat-room-info">
+          <span class="chat-room-label">Room</span>
+          <span class="chat-room-id" id="chat-room-id">A</span>
+        </div>
+        <div class="chat-user-info">
+          <span class="chat-username" id="chat-username"></span>
+        </div>
+        <button class="btn btn-leave" id="leave-btn">Leave</button>
+      </div>
+
+      <!-- Message log -->
+      <div class="message-log" id="message-log">
+        <div class="empty-state" id="empty-state">
+          <p>No messages yet.<br/>Draw something and send it!</p>
+        </div>
+      </div>
+
+      <!-- Drawing area -->
+      <div class="drawing-panel">
+
+        <!-- Toolbar -->
+        <div class="canvas-toolbar">
+          <div class="tool-group" id="color-swatches">
+            <button class="swatch active" data-color="#1A1A1A" style="background:#1A1A1A" title="Black" aria-label="Black"></button>
+            <button class="swatch" data-color="#E05A5A" style="background:#E05A5A" title="Red" aria-label="Red"></button>
+            <button class="swatch" data-color="#4A90D9" style="background:#4A90D9" title="Blue" aria-label="Blue"></button>
+            <button class="swatch" data-color="#5AB85A" style="background:#5AB85A" title="Green" aria-label="Green"></button>
+            <button class="swatch" data-color="#E09A1A" style="background:#E09A1A" title="Orange" aria-label="Orange"></button>
+            <button class="swatch swatch-white" data-color="#FFFFFF" style="background:#FFFFFF" title="Eraser" aria-label="Eraser">✕</button>
+          </div>
+          <div class="tool-group" id="thickness-options">
+            <button class="thickness-btn active" data-size="3" title="Thin" aria-label="Thin brush">
+              <span class="thickness-dot" style="width:4px;height:4px;"></span>
+            </button>
+            <button class="thickness-btn" data-size="7" title="Medium" aria-label="Medium brush">
+              <span class="thickness-dot" style="width:8px;height:8px;"></span>
+            </button>
+            <button class="thickness-btn" data-size="14" title="Thick" aria-label="Thick brush">
+              <span class="thickness-dot" style="width:14px;height:14px;"></span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <canvas id="drawing-canvas"></canvas>
+
+        <!-- Canvas actions -->
+        <div class="canvas-actions">
+          <button class="btn btn-secondary btn-sm" id="clear-btn">Clear</button>
+          <button class="btn btn-primary btn-sm" id="send-btn">Send ↑</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
