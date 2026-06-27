@@ -29,7 +29,11 @@ func main() {
 	mux.HandleFunc("/send", handlers.SendHandler)			// Send
 	mux.HandleFunc("/poll", handlers.PollHandler)			// Poll
 	mux.HandleFunc("/rooms", handlers.RoomsHandler)			// Rooms
+	mux.HandleFunc("/leave", handlers.LeaveHandler)			// Leave
 	// TODO Handle 404 in the future
+
+	// Cleanup routine loop during program lifecycle
+	go rooms.Store.StartCleanup()
 
 	// opens the port, hands requests to the mux and listens
 	log.Fatal(http.ListenAndServe(":8080", mux))

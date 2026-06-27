@@ -31,6 +31,7 @@ type Message struct {
 type Client struct {
 	UserID int
 	UserName string
+	LastSeen time.Time
 }
 
 type Room struct {
@@ -70,6 +71,7 @@ func (st *RoomStore) JoinRoom(roomID string, username string) error {
 	newClient := Client {
 		UserID: len(room.ClientList),
 		UserName: username,
+		LastSeen: time.Now(),
 	}
 	room.ClientList = append(room.ClientList, newClient) // add client
 	st.Rooms[roomID] = room // save
@@ -115,4 +117,61 @@ func (st *RoomStore) GetRooms() []RoomInfo {
 		})
 	}
 	return result
+}
+
+// lock, check exists, rebuild slice without the leaving client, save, return nil.
+func (st *RoomStore) LeaveRoom(roomID string, username string) error {
+	var updated []Client
+	st.Mu.Lock()
+	defer st.Mu.Unlock()
+
+	room, exists := st.Rooms[roomID]
+	if !exists {
+		return errors.New("room does not exist")
+	}
+	for _, client := range room.ClientList {
+		if client.UserName != username {
+			updated = append(updated, client)
+    	}
+	}
+	room.ClientList = updated
+	st.Rooms[roomID] = room
+	return nil
+}
+
+func (st *RoomStore) StartCleanup() {
+	// Iterate through all the rooms
+	for {
+		st.Mu.Lock()
+		for roomID, room := range st.Rooms {
+			var active []Client
+			for _, client := range room.ClientList {
+				if time.Since(client.LastSeen) <= 60*time.Second {
+					// Add client to active list
+					active = append(active, client)
+				}
+			}
+			room.ClientList = active
+			st.Rooms[roomID] = room
+		}
+		st.Mu.Unlock()
+		time.Sleep(10 * time.Second)
+	}
+}
+
+func (st *RoomStore) UpdateLastSeen(roomID string, username string) {
+	st.Mu.Lock()
+	defer st.Mu.Unlock()
+
+	room, exists := st.Rooms[roomID]
+	if !exists {
+		return 
+	}
+	for i := range room.ClientList {
+		if room.ClientList[i].UserName == username { 
+			room.ClientList[i].LastSeen = time.Now()
+		}
+	}
+	room.ClientList = room.ClientList
+	st.Rooms[roomID] = room
 }

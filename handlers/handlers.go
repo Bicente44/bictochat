@@ -53,12 +53,14 @@ func SendHandler(w http.ResponseWriter, r *http.Request) {
 
 func PollHandler(w http.ResponseWriter, r *http.Request) {
 	roomID := r.URL.Query().Get("roomID")
+	username := r.URL.Query().Get("username")
 	
 	messages, err := rooms.Store.GetMessage(roomID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	rooms.Store.UpdateLastSeen(roomID, username)
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(messages)
 }
@@ -67,4 +69,19 @@ func RoomsHandler(w http.ResponseWriter, r *http.Request) {
 	roomList := rooms.Store.GetRooms()
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(roomList)
+}
+
+func LeaveHandler(w http.ResponseWriter, r *http.Request) {
+	roomID := r.URL.Query().Get("roomID")
+	username := r.URL.Query().Get("username")
+    if roomID == "" || username == "" {
+        http.Error(w, "missing roomID or username", http.StatusBadRequest)
+        return
+    }
+    err := rooms.Store.LeaveRoom(roomID, username)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusBadRequest)
+        return
+    }
+    w.WriteHeader(http.StatusOK)
 }
