@@ -9,9 +9,9 @@ Built with Go and deployable anywhere.
 
 ## Stack
 
-- **Backend** — Go, standard library only (`net/http`, `sync`, `encoding/json`)
-- **Frontend** — Vanilla HTML, CSS, JS. No frameworks, no build step.
-- **Hosting** — Google Cloud Run (scales to zero, single instance, in-memory state)
+- **Backend** Go, standard library only (net/http, sync, encoding/json)
+- **Frontend** Vanilla HTML, CSS, JS. No frameworks, no build step.
+- **Hosting** Google Cloud Run (scales to zero, single instance, in-memory state)
 
 ## How it works
 
