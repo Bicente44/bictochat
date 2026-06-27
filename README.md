@@ -3,6 +3,8 @@
 A Pictochat inspired web app where users join temporary online rooms to draw and send messages.
 Built with Go and deployable anywhere.
 
+https://bictochat-341441406210.us-central1.run.app
+
 ## What it is
 
 8 rooms (A–H), 4 users max per room. Pick a room, set a username, draw on the canvas, hit send. Messages appear as chat bubbles for everyone in the room. Rooms are temporary and they reset on inactivity.
