@@ -14,6 +14,7 @@ import (
 	"log"
 	"bicente44.app/bictochat/handlers"
 	"bicente44.app/bictochat/rooms"
+	"fmt"
 )
 
 func main() {
@@ -36,6 +37,11 @@ func main() {
 	go rooms.Store.StartCleanup()
 
 	// opens the port, hands requests to the mux and listens
-	log.Fatal(http.ListenAndServe(":8080", mux))
+	fmt.Println("Serving on http://localhost:8080")
+
+	err := http.ListenAndServe(":8080", mux)
+	if err != nil {
+		log.Fatal("Failed to serve")
+	}
 }
 
