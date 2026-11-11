@@ -3,7 +3,7 @@
    Backend base URL: adjust BASE_URL if your Go server runs elsewhere.
    ───────────────────────────────────────────────────────────────── */
 
-const BASE_URL = '';   // e.g. 'http://localhost:8080' or '' for same origin
+const BASE_URL = '.';   // e.g. 'http://localhost:8080' or '' for same origin
 
 // ─── State ──────────────────────────────────────────────────────────
 let currentRoom  = null;   // room ID string, e.g. "A"

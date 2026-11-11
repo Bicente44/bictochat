@@ -8,6 +8,7 @@
 *.so
 *.dylib
 bictochat
+/bictochat
 
 # Test binary, built with `go test -c`
 *.test
